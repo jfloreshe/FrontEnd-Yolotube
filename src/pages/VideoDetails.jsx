@@ -14,11 +14,14 @@ import SkeletonRelatedVideos from "../components/Placeholders/SkeletonRelatedVid
 import SkeletonVideoDetails from "../components/Placeholders/SkeletonVideoDetails";
 
 const VideoDetails = () => {
-  const videoId = useParams();
-  let id = videoId.id;
+  const videourl= useParams();
+  // let id = videoId.id;
+  // let id = videoId;
   // console.log(id);
 
   const { data, isLoading, isError } = useApi(`videos/${id}`);
+
+
   if (isError) return "An error has occurred.";
   if (isLoading)
     return (

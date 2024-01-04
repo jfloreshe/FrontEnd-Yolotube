@@ -5,7 +5,7 @@ import ChannelDetail from "./pages/ChannelDetail";
 import Feed from "./pages/Feed";
 import Navbar from "./containers/Navbar";
 import SearchFeed from "./pages/SearchFeed";
-import SideBar from "./containers/SideBar";
+// import SideBar from "./containers/SideBar";
 import CategoriesPage from "./pages/CategoriesPage";
 import VideoDetails from "./pages/VideoDetails";
 import DummySidebar from "./components/DummySidebar";
@@ -24,7 +24,7 @@ function App() {
           <ScrollToTop />
 
           <div className="w-full h-screen overflow-hidden flex justify-center items-center ">
-            <SideBar />
+            {/* <SideBar /> */}
 
             <div className="w-full">
               <Navbar />

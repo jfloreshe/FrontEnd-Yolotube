@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { api } from "../utils/api";
+import { apidb } from "../utils/apiFirestore";
+import { collection, getDocs } from 'firebase/firestore/lite';
 import { Ref } from "react";
 
 const SearchBar = () => {
@@ -11,16 +13,42 @@ const SearchBar = () => {
   // const suggestionMenu = useRef(null)
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [data_yolotube, setData_yolotube] = useState();
   const [suggestionsToggle, setSuggestionsToggle] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
+
+
+  const useApiDb = async (query) => {
+    // console.log(query);
+    const data_yolotube = collection(apidb, 'data-yolotube');
+    const dataSnapshot = await getDocs(data_yolotube);
+    const dataList = dataSnapshot.docs.map(doc => doc.data());
+
+    // console.log("llamando");
+    const regex = new RegExp(query, "i");
+
+    // Creamos una lista de resultados vacía.
+    const results = [];
+
+    for (const data_ of dataList) {
+      if (regex.test(data_.tag)) {
+        results.push(data_.tag);
+      }
+    }
+    setData_yolotube(results);
+  }
 
   useEffect(() => {
     api(`search/suggestions?q=${searchTerm}`).then((response) => {
       setSuggestions(response.suggestions);
     });
+    useApiDb(`${searchTerm}`);
   }, [searchTerm]);
 
-  console.log(suggestions);
+  // console.log(apidb);
+  // console.log(suggestions);
+  // console.log(suggestionsToggle);
+  console.log("firestore", data_yolotube);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -104,7 +132,7 @@ const SearchBar = () => {
           >
             <div>
               <AnimatePresence>
-                {suggestions.slice(0, 7).map((item, index) => {
+                {data_yolotube.slice(0, 7).map((item, index) => {
                   return (
                     // mousedown is used beacuse it fires before onBlur in inputText so search get executed
                     <motion.p

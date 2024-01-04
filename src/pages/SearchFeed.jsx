@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -11,10 +11,25 @@ import SkeletonVideoList from "../components/Placeholders/SkeletonVideoList";
 
 const SearchFeed = () => {
   const { searchTerm } = useParams();
+  const [data, setSearchData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(null);
 
-  const { data, isLoading, isError } = useApi(
-    `search?q=${searchTerm}&region=IN`
-  );
+  const fetchData = async () => {
+    try {
+      const { data: searchData, isLoading, isError } = await useApi(`search?q=${searchTerm}&region=IN`, searchTerm);
+      //console.log(searchData);
+      setSearchData(searchData);
+      setIsLoading(isLoading);
+      setIsError(isError);
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(error);
+    }
+  };
+
+  fetchData();
+  
   if (isError) return "An error has occurred.";
   if (isLoading)
     return (
@@ -40,6 +55,7 @@ const SearchFeed = () => {
       </div>
     );
 
+  //console.log("SearchFeed", data);
   if (data) {
     return (
       <div className="">

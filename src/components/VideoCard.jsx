@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import checkicon from "../assets/check.svg";
+import Modal from './ModalVideo'; 
+
+
 const VideoCard = ({
   videoId,
+  videourl,
   title,
   channelTitle,
   channelId,
@@ -14,14 +18,21 @@ const VideoCard = ({
   channelThumbnail,
 }) => {
   const navigate = useNavigate();
-  const handleClick = (id) => {
-    navigate(`/video/${videoId}`);
+  
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    // navigate(`/video/${videourl}`);
+    setIsOpen(!isOpen);
   };
   const handleChannelClick = (id) => {
     navigate(`/channel/${channelId}`);
   };
 
+
+
   return (
+    
     <motion.div 
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -39,7 +50,7 @@ const VideoCard = ({
       >
         {/* thumbnail */}
         <div
-          onClick={() => handleClick(videoId)}
+          onClick={() => toggleModal()}
           className="relative w-full z-0"
         >
           <motion.img whileHover={{opacity:0.5  }}  transition={{duration:0.2}}
@@ -54,6 +65,8 @@ const VideoCard = ({
             </div>
           )}
         </div>
+        <Modal isOpen={isOpen} toggleModal={toggleModal} videoLink={videourl} />
+
         {/* videocard details */}
         <div className="py-4 px-2 md:px-0  text-xs font-medium text-gray-400 z-10 ">
           <div className="flex justify-between items-center ">
