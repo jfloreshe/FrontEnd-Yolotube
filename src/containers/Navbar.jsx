@@ -58,7 +58,7 @@ const Navbar = () => {
       // headers: headers,
     };
     // Replace 'API_ENDPOINT' with your API endpoint URL
-    fetch('http://localhost:8080/upload-video', requestOptions)
+    fetch('http://54.204.222.87:8080/upload-video', requestOptions)
     .then(response => {
       // Handle the API response
       console.log('File uploaded successfully!', response);
